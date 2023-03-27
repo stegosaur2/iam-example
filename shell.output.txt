@@ -1,0 +1,1087 @@
+{23-03-27 0:42}alpha:~/brightwheel dh% terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_group.admin will be created
+  + resource "aws_iam_group" "admin" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Administrators"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group.backend will be created
+  + resource "aws_iam_group" "backend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Backend"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group.data will be created
+  + resource "aws_iam_group" "data" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Data"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group.frontend will be created
+  + resource "aws_iam_group" "frontend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Frontend"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group_membership.admin_users will be created
+  + resource "aws_iam_group_membership" "admin_users" {
+      + group = "Administrators"
+      + id    = (known after apply)
+      + name  = "Administrators"
+      + users = [
+          + "example_admin_user_1",
+          + "example_admin_user_2",
+        ]
+    }
+
+  # aws_iam_group_membership.backend_users will be created
+  + resource "aws_iam_group_membership" "backend_users" {
+      + group = "Backend"
+      + id    = (known after apply)
+      + name  = "Backend"
+      + users = [
+          + "example_backend_user_1",
+          + "example_backend_user_2",
+        ]
+    }
+
+  # aws_iam_group_membership.data_users will be created
+  + resource "aws_iam_group_membership" "data_users" {
+      + group = "Data"
+      + id    = (known after apply)
+      + name  = "Data"
+      + users = [
+          + "example_data_user_1",
+          + "example_data_user_2",
+        ]
+    }
+
+  # aws_iam_group_membership.frontend_users will be created
+  + resource "aws_iam_group_membership" "frontend_users" {
+      + group = "Frontend"
+      + id    = (known after apply)
+      + name  = "Frontend"
+      + users = [
+          + "example_frontend_user_1",
+          + "example_frontend_user_2",
+        ]
+    }
+
+  # aws_iam_policy.admin will be created
+  + resource "aws_iam_policy" "admin" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "admin_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = {
+                  + Action   = "iam:*"
+                  + Effect   = "Allow"
+                  + Resource = "*"
+                }
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_policy.backend will be created
+  + resource "aws_iam_policy" "backend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "backend_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "eks:DescribeCluster",
+                          + "eks:ListClusters",
+                          + "cloudwatch:Describe*",
+                          + "cloudwatch:List*",
+                          + "cloudwatch:Get*",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_policy.data will be created
+  + resource "aws_iam_policy" "data" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "data_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "redshift:Describe*",
+                          + "redshift:ViewQueriesInConsole",
+                          + "cloudwatch:Describe*",
+                          + "cloudwatch:List*",
+                          + "cloudwatch:Get*",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_policy.frontend will be created
+  + resource "aws_iam_policy" "frontend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "frontend_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "cloudfront:Get*",
+                          + "cloudfront:List*",
+                          + "cloudwatch:Describe*",
+                          + "cloudwatch:List*",
+                          + "cloudwatch:Get*",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_role.admin will be created
+  + resource "aws_iam_role" "admin" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "admin_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role.backend will be created
+  + resource "aws_iam_role" "backend" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "backend_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role.data will be created
+  + resource "aws_iam_role" "data" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "data_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role.frontend will be created
+  + resource "aws_iam_role" "frontend" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "frontend_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.admin_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "admin_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "admin_role"
+    }
+
+  # aws_iam_role_policy_attachment.backend_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "backend_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "backend_role"
+    }
+
+  # aws_iam_role_policy_attachment.data_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "data_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "data_role"
+    }
+
+  # aws_iam_role_policy_attachment.frontend_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "frontend_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "frontend_role"
+    }
+
+Plan: 20 to add, 0 to change, 0 to destroy.
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+{23-03-27 0:42}alpha:~/brightwheel dh% terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_group.admin will be created
+  + resource "aws_iam_group" "admin" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Administrators"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group.backend will be created
+  + resource "aws_iam_group" "backend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Backend"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group.data will be created
+  + resource "aws_iam_group" "data" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Data"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group.frontend will be created
+  + resource "aws_iam_group" "frontend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "Frontend"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group_membership.admin_users will be created
+  + resource "aws_iam_group_membership" "admin_users" {
+      + group = "Administrators"
+      + id    = (known after apply)
+      + name  = "Administrators"
+      + users = [
+          + "example_admin_user_1",
+          + "example_admin_user_2",
+        ]
+    }
+
+  # aws_iam_group_membership.backend_users will be created
+  + resource "aws_iam_group_membership" "backend_users" {
+      + group = "Backend"
+      + id    = (known after apply)
+      + name  = "Backend"
+      + users = [
+          + "example_backend_user_1",
+          + "example_backend_user_2",
+        ]
+    }
+
+  # aws_iam_group_membership.data_users will be created
+  + resource "aws_iam_group_membership" "data_users" {
+      + group = "Data"
+      + id    = (known after apply)
+      + name  = "Data"
+      + users = [
+          + "example_data_user_1",
+          + "example_data_user_2",
+        ]
+    }
+
+  # aws_iam_group_membership.frontend_users will be created
+  + resource "aws_iam_group_membership" "frontend_users" {
+      + group = "Frontend"
+      + id    = (known after apply)
+      + name  = "Frontend"
+      + users = [
+          + "example_frontend_user_1",
+          + "example_frontend_user_2",
+        ]
+    }
+
+  # aws_iam_policy.admin will be created
+  + resource "aws_iam_policy" "admin" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "admin_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = {
+                  + Action   = "iam:*"
+                  + Effect   = "Allow"
+                  + Resource = "*"
+                }
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_policy.backend will be created
+  + resource "aws_iam_policy" "backend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "backend_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "eks:DescribeCluster",
+                          + "eks:ListClusters",
+                          + "cloudwatch:Describe*",
+                          + "cloudwatch:List*",
+                          + "cloudwatch:Get*",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_policy.data will be created
+  + resource "aws_iam_policy" "data" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "data_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "redshift:Describe*",
+                          + "redshift:ViewQueriesInConsole",
+                          + "cloudwatch:Describe*",
+                          + "cloudwatch:List*",
+                          + "cloudwatch:Get*",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_policy.frontend will be created
+  + resource "aws_iam_policy" "frontend" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "frontend_policy"
+      + path      = "/"
+      + policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "cloudfront:Get*",
+                          + "cloudfront:List*",
+                          + "cloudwatch:Describe*",
+                          + "cloudwatch:List*",
+                          + "cloudwatch:Get*",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id = (known after apply)
+      + tags_all  = (known after apply)
+    }
+
+  # aws_iam_role.admin will be created
+  + resource "aws_iam_role" "admin" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "admin_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role.backend will be created
+  + resource "aws_iam_role" "backend" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "backend_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role.data will be created
+  + resource "aws_iam_role" "data" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "data_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role.frontend will be created
+  + resource "aws_iam_role" "frontend" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "frontend_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.admin_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "admin_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "admin_role"
+    }
+
+  # aws_iam_role_policy_attachment.backend_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "backend_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "backend_role"
+    }
+
+  # aws_iam_role_policy_attachment.data_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "data_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "data_role"
+    }
+
+  # aws_iam_role_policy_attachment.frontend_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "frontend_attachment" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "frontend_role"
+    }
+
+Plan: 20 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_iam_group.frontend: Creating...
+aws_iam_group.data: Creating...
+aws_iam_policy.backend: Creating...
+aws_iam_group.admin: Creating...
+aws_iam_policy.data: Creating...
+aws_iam_group.backend: Creating...
+aws_iam_policy.frontend: Creating...
+aws_iam_role.backend: Creating...
+aws_iam_role.frontend: Creating...
+aws_iam_role.admin: Creating...
+aws_iam_group.frontend: Creation complete after 0s [id=Frontend]
+aws_iam_group.admin: Creation complete after 0s [id=Administrators]
+aws_iam_policy.admin: Creating...
+aws_iam_group.backend: Creation complete after 0s [id=Backend]
+aws_iam_role.data: Creating...
+aws_iam_group_membership.frontend_users: Creating...
+aws_iam_policy.frontend: Creation complete after 1s [id=arn:aws:iam::198474821381:policy/frontend_policy]
+aws_iam_policy.backend: Creation complete after 1s [id=arn:aws:iam::198474821381:policy/backend_policy]
+aws_iam_group_membership.admin_users: Creating...
+aws_iam_group_membership.backend_users: Creating...
+aws_iam_policy.data: Creation complete after 1s [id=arn:aws:iam::198474821381:policy/data_policy]
+aws_iam_role.backend: Creation complete after 1s [id=backend_role]
+aws_iam_role.frontend: Creation complete after 1s [id=frontend_role]
+aws_iam_role_policy_attachment.backend_attachment: Creating...
+aws_iam_role.admin: Creation complete after 1s [id=admin_role]
+aws_iam_role_policy_attachment.frontend_attachment: Creating...
+aws_iam_group.data: Creation complete after 1s [id=Data]
+aws_iam_group_membership.data_users: Creating...
+aws_iam_role.data: Creation complete after 1s [id=data_role]
+aws_iam_role_policy_attachment.data_attachment: Creating...
+aws_iam_role_policy_attachment.backend_attachment: Creation complete after 0s [id=backend_role-20230327044251601500000001]
+aws_iam_role_policy_attachment.frontend_attachment: Creation complete after 0s [id=frontend_role-20230327044251622100000002]
+aws_iam_role_policy_attachment.data_attachment: Creation complete after 0s [id=data_role-20230327044251681900000003]
+╷
+│ Error: creating IAM Policy admin_policy: MalformedPolicyDocument: The policy failed legacy parsing
+│       status code: 400, request id: f12fa52b-6213-4bbd-aa74-b2ce726038c8
+│ 
+│   with aws_iam_policy.admin,
+│   on iam.tf line 145, in resource "aws_iam_policy" "admin":
+│  145: resource "aws_iam_policy" "admin" {
+│ 
+╵
+╷
+│ Error: creating IAM Group Membership (Frontend): adding User (example_frontend_user_2) to Group (Frontend): NoSuchEntity: The user with name example_frontend_user_2 cannot be found.
+│       status code: 404, request id: 2562c948-567c-439c-a5f2-a42b69a82dbc
+│ 
+│   with aws_iam_group_membership.frontend_users,
+│   on iam.tf line 176, in resource "aws_iam_group_membership" "frontend_users":
+│  176: resource "aws_iam_group_membership" "frontend_users" {
+│ 
+╵
+╷
+│ Error: creating IAM Group Membership (Backend): adding User (example_backend_user_1) to Group (Backend): NoSuchEntity: The user with name example_backend_user_1 cannot be found.
+│       status code: 404, request id: 7340cd3e-e12e-41de-9b83-dfc6f936ac91
+│ 
+│   with aws_iam_group_membership.backend_users,
+│   on iam.tf line 181, in resource "aws_iam_group_membership" "backend_users":
+│  181: resource "aws_iam_group_membership" "backend_users" {
+│ 
+╵
+╷
+│ Error: creating IAM Group Membership (Data): adding User (example_data_user_2) to Group (Data): NoSuchEntity: The user with name example_data_user_2 cannot be found.
+│       status code: 404, request id: 4f3df1f8-1d8a-456d-b073-4ddf1fe016fb
+│ 
+│   with aws_iam_group_membership.data_users,
+│   on iam.tf line 186, in resource "aws_iam_group_membership" "data_users":
+│  186: resource "aws_iam_group_membership" "data_users" {
+│ 
+╵
+╷
+│ Error: creating IAM Group Membership (Administrators): adding User (example_admin_user_1) to Group (Administrators): NoSuchEntity: The user with name example_admin_user_1 cannot be found.
+│       status code: 404, request id: f61c6057-024b-4812-9ee3-ab00c7266e32
+│ 
+│   with aws_iam_group_membership.admin_users,
+│   on iam.tf line 191, in resource "aws_iam_group_membership" "admin_users":
+│  191: resource "aws_iam_group_membership" "admin_users" {
+│ 
+╵
+{23-03-27 0:42}alpha:~/brightwheel dh% ssh root@stegosaur.org -v -p10022
+{23-03-27 0:44}alpha:~/brightwheel dh% terraform destroy
+aws_iam_group.data: Refreshing state... [id=Data]
+aws_iam_policy.frontend: Refreshing state... [id=arn:aws:iam::198474821381:policy/frontend_policy]
+aws_iam_policy.data: Refreshing state... [id=arn:aws:iam::198474821381:policy/data_policy]
+aws_iam_role.frontend: Refreshing state... [id=frontend_role]
+aws_iam_group.backend: Refreshing state... [id=Backend]
+aws_iam_group.frontend: Refreshing state... [id=Frontend]
+aws_iam_role.backend: Refreshing state... [id=backend_role]
+aws_iam_role.admin: Refreshing state... [id=admin_role]
+aws_iam_role.data: Refreshing state... [id=data_role]
+aws_iam_policy.backend: Refreshing state... [id=arn:aws:iam::198474821381:policy/backend_policy]
+aws_iam_group.admin: Refreshing state... [id=Administrators]
+aws_iam_role_policy_attachment.data_attachment: Refreshing state... [id=data_role-20230327044251681900000003]
+aws_iam_role_policy_attachment.backend_attachment: Refreshing state... [id=backend_role-20230327044251601500000001]
+aws_iam_role_policy_attachment.frontend_attachment: Refreshing state... [id=frontend_role-20230327044251622100000002]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_iam_group.admin will be destroyed
+  - resource "aws_iam_group" "admin" {
+      - arn       = "arn:aws:iam::198474821381:group/Administrators" -> null
+      - id        = "Administrators" -> null
+      - name      = "Administrators" -> null
+      - path      = "/" -> null
+      - unique_id = "AGPAS4NQFN4C6VRV3ATV4" -> null
+    }
+
+  # aws_iam_group.backend will be destroyed
+  - resource "aws_iam_group" "backend" {
+      - arn       = "arn:aws:iam::198474821381:group/Backend" -> null
+      - id        = "Backend" -> null
+      - name      = "Backend" -> null
+      - path      = "/" -> null
+      - unique_id = "AGPAS4NQFN4CXUSJLGOJA" -> null
+    }
+
+  # aws_iam_group.data will be destroyed
+  - resource "aws_iam_group" "data" {
+      - arn       = "arn:aws:iam::198474821381:group/Data" -> null
+      - id        = "Data" -> null
+      - name      = "Data" -> null
+      - path      = "/" -> null
+      - unique_id = "AGPAS4NQFN4CT2SZHVKGK" -> null
+    }
+
+  # aws_iam_group.frontend will be destroyed
+  - resource "aws_iam_group" "frontend" {
+      - arn       = "arn:aws:iam::198474821381:group/Frontend" -> null
+      - id        = "Frontend" -> null
+      - name      = "Frontend" -> null
+      - path      = "/" -> null
+      - unique_id = "AGPAS4NQFN4CXYF4WP5JV" -> null
+    }
+
+  # aws_iam_policy.backend will be destroyed
+  - resource "aws_iam_policy" "backend" {
+      - arn       = "arn:aws:iam::198474821381:policy/backend_policy" -> null
+      - id        = "arn:aws:iam::198474821381:policy/backend_policy" -> null
+      - name      = "backend_policy" -> null
+      - path      = "/" -> null
+      - policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "eks:DescribeCluster",
+                          - "eks:ListClusters",
+                          - "cloudwatch:Describe*",
+                          - "cloudwatch:List*",
+                          - "cloudwatch:Get*",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "*"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - policy_id = "ANPAS4NQFN4CRIF4NK3B2" -> null
+      - tags      = {} -> null
+      - tags_all  = {} -> null
+    }
+
+  # aws_iam_policy.data will be destroyed
+  - resource "aws_iam_policy" "data" {
+      - arn       = "arn:aws:iam::198474821381:policy/data_policy" -> null
+      - id        = "arn:aws:iam::198474821381:policy/data_policy" -> null
+      - name      = "data_policy" -> null
+      - path      = "/" -> null
+      - policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "redshift:Describe*",
+                          - "redshift:ViewQueriesInConsole",
+                          - "cloudwatch:Describe*",
+                          - "cloudwatch:List*",
+                          - "cloudwatch:Get*",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "*"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - policy_id = "ANPAS4NQFN4C6JR5R4Q5A" -> null
+      - tags      = {} -> null
+      - tags_all  = {} -> null
+    }
+
+  # aws_iam_policy.frontend will be destroyed
+  - resource "aws_iam_policy" "frontend" {
+      - arn       = "arn:aws:iam::198474821381:policy/frontend_policy" -> null
+      - id        = "arn:aws:iam::198474821381:policy/frontend_policy" -> null
+      - name      = "frontend_policy" -> null
+      - path      = "/" -> null
+      - policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "cloudfront:Get*",
+                          - "cloudfront:List*",
+                          - "cloudwatch:Describe*",
+                          - "cloudwatch:List*",
+                          - "cloudwatch:Get*",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "*"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - policy_id = "ANPAS4NQFN4CYFDYHHIFI" -> null
+      - tags      = {} -> null
+      - tags_all  = {} -> null
+    }
+
+  # aws_iam_role.admin will be destroyed
+  - resource "aws_iam_role" "admin" {
+      - arn                   = "arn:aws:iam::198474821381:role/admin_role" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - AWS = "*"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2023-03-27T04:42:51Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "admin_role" -> null
+      - managed_policy_arns   = [] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "admin_role" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {} -> null
+      - unique_id             = "AROAS4NQFN4CZ42SHRRXB" -> null
+    }
+
+  # aws_iam_role.backend will be destroyed
+  - resource "aws_iam_role" "backend" {
+      - arn                   = "arn:aws:iam::198474821381:role/backend_role" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - AWS = "*"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2023-03-27T04:42:51Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "backend_role" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::198474821381:policy/backend_policy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "backend_role" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {} -> null
+      - unique_id             = "AROAS4NQFN4CSS2E327KJ" -> null
+    }
+
+  # aws_iam_role.data will be destroyed
+  - resource "aws_iam_role" "data" {
+      - arn                   = "arn:aws:iam::198474821381:role/data_role" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - AWS = "*"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2023-03-27T04:42:51Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "data_role" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::198474821381:policy/data_policy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "data_role" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {} -> null
+      - unique_id             = "AROAS4NQFN4CVERNEEMGX" -> null
+    }
+
+  # aws_iam_role.frontend will be destroyed
+  - resource "aws_iam_role" "frontend" {
+      - arn                   = "arn:aws:iam::198474821381:role/frontend_role" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - AWS = "*"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2023-03-27T04:42:51Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "frontend_role" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::198474821381:policy/frontend_policy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "frontend_role" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {} -> null
+      - unique_id             = "AROAS4NQFN4C3LW5YNOBE" -> null
+    }
+
+  # aws_iam_role_policy_attachment.backend_attachment will be destroyed
+  - resource "aws_iam_role_policy_attachment" "backend_attachment" {
+      - id         = "backend_role-20230327044251601500000001" -> null
+      - policy_arn = "arn:aws:iam::198474821381:policy/backend_policy" -> null
+      - role       = "backend_role" -> null
+    }
+
+  # aws_iam_role_policy_attachment.data_attachment will be destroyed
+  - resource "aws_iam_role_policy_attachment" "data_attachment" {
+      - id         = "data_role-20230327044251681900000003" -> null
+      - policy_arn = "arn:aws:iam::198474821381:policy/data_policy" -> null
+      - role       = "data_role" -> null
+    }
+
+  # aws_iam_role_policy_attachment.frontend_attachment will be destroyed
+  - resource "aws_iam_role_policy_attachment" "frontend_attachment" {
+      - id         = "frontend_role-20230327044251622100000002" -> null
+      - policy_arn = "arn:aws:iam::198474821381:policy/frontend_policy" -> null
+      - role       = "frontend_role" -> null
+    }
+
+Plan: 0 to add, 0 to change, 14 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_iam_role_policy_attachment.data_attachment: Destroying... [id=data_role-20230327044251681900000003]
+aws_iam_group.admin: Destroying... [id=Administrators]
+aws_iam_role_policy_attachment.backend_attachment: Destroying... [id=backend_role-20230327044251601500000001]
+aws_iam_group.backend: Destroying... [id=Backend]
+aws_iam_role_policy_attachment.frontend_attachment: Destroying... [id=frontend_role-20230327044251622100000002]
+aws_iam_group.frontend: Destroying... [id=Frontend]
+aws_iam_group.data: Destroying... [id=Data]
+aws_iam_role.admin: Destroying... [id=admin_role]
+aws_iam_group.backend: Destruction complete after 0s
+aws_iam_group.data: Destruction complete after 0s
+aws_iam_group.admin: Destruction complete after 0s
+aws_iam_group.frontend: Destruction complete after 0s
+aws_iam_role_policy_attachment.backend_attachment: Destruction complete after 0s
+aws_iam_role_policy_attachment.frontend_attachment: Destruction complete after 0s
+aws_iam_role_policy_attachment.data_attachment: Destruction complete after 0s
+aws_iam_policy.backend: Destroying... [id=arn:aws:iam::198474821381:policy/backend_policy]
+aws_iam_role.backend: Destroying... [id=backend_role]
+aws_iam_policy.data: Destroying... [id=arn:aws:iam::198474821381:policy/data_policy]
+aws_iam_role.data: Destroying... [id=data_role]
+aws_iam_policy.frontend: Destroying... [id=arn:aws:iam::198474821381:policy/frontend_policy]
+aws_iam_role.frontend: Destroying... [id=frontend_role]
+aws_iam_role.admin: Destruction complete after 0s
+aws_iam_role.backend: Destruction complete after 0s
+aws_iam_policy.data: Destruction complete after 0s
+aws_iam_role.frontend: Destruction complete after 0s
+aws_iam_policy.backend: Destruction complete after 0s
+aws_iam_policy.frontend: Destruction complete after 0s
+aws_iam_role.data: Destruction complete after 0s
+
+Destroy complete! Resources: 14 destroyed.
