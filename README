@@ -1,0 +1,5 @@
+# IAM Role authentication example
+
+main.tf -- terraform and provider data
+iam.tf -- definitions for iam groups, roles, policies, attachments, and users. users are given read only permissions unless if administrator
+variables.tf -- variable definitions, defaults to example users
